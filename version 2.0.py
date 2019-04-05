@@ -10,7 +10,6 @@ from keras.utils import plot_model
 from keras.preprocessing.sequence import TimeseriesGenerator
 from keras.utils import to_categorical
 from keras.preprocessing.sequence import pad_sequences
-from attention import Position_Embedding, Attention
 from self_attention import MultiHeadSelfAttention
 
 
