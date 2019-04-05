@@ -11,6 +11,7 @@ from keras.preprocessing.sequence import TimeseriesGenerator
 from keras.utils import to_categorical
 from keras.preprocessing.sequence import pad_sequences
 from self_attention import MultiHeadSelfAttention
+from position import AddPositionalEncoding, TransformerCoordinateEmbedding
 
 
 bc = BertClient()
@@ -33,7 +34,7 @@ def Upstream(text):
 
 
 print('(1) pre-processing train texts...')
-train_texts = open('D:/TBdata/labcorpus/simple/100/train.txt', encoding='utf-8').read().split('\n')
+train_texts = open('//train_file_path/train.txt', encoding='utf-8').read().split('\n')
 
 train_docs = np.empty((0, MAX_SENTS, 768))
 for t_line in train_texts:
@@ -43,7 +44,7 @@ print(' train_docs finished! shape is:'+str(np.shape(train_docs)))
 tf_train=tf.convert_to_tensor(train_docs, dtype=tf.float32)
 
 print('(2) pre-processing val texts...')
-val_texts = open('D:/TBdata/labcorpus/simple/100/test.txt', encoding='utf-8').read().split('\n')
+val_texts = open('//val_file_path/val.txt', encoding='utf-8').read().split('\n')
 
 val_docs = np.empty((0, MAX_SENTS, 768))
 for v_line in val_texts:
@@ -53,23 +54,24 @@ print(' val_docs finished! shape is:'+str(np.shape(val_docs)))
 tf_val=tf.convert_to_tensor(val_docs, dtype=tf.float32)
 
 
-train_labels = open('D:/TBdata/labcorpus/simple/100/train_label.txt', encoding='utf-8').read().split('\n')
-val_labels = open('D:/TBdata/labcorpus/simple/100/test_label.txt', encoding='utf-8').read().split('\n')
+train_labels = open('//train_label_path/train_label.txt', encoding='utf-8').read().split('\n')
+val_labels = open('//test_label_path/test_label.txt', encoding='utf-8').read().split('\n')
 #all_texts = train_texts + test_texts
 #all_labels = train_labels + test_labels
 train_labels = to_categorical(np.asarray(train_labels))
 val_labels = to_categorical(np.asarray(val_labels))
 
 print('(3) building downstream model...')
-doc_input = Input(shape=(18, 768), dtype='float32')
-doc_encoder = MultiHeadSelfAttention(num_heads=1, use_masking=False)(doc_input)
+doc_input = Input(shape=(MAX_SENTS, 768), dtype='float32')
+pos = AddPositionalEncoding()(doc_input)
+doc_encoder = MultiHeadSelfAttention(num_heads=1, use_masking=False)(pos)
 flat = Flatten()(doc_encoder)
 dense = Dense(384, activation='relu')(flat)
 drop = Dropout(0.1)(dense)
 pred = Dense(2, activation='sigmoid')(drop)
 model = Model(doc_input, pred)
 model.summary()
-plot_model(model, to_file='D:/TBdata/result/model-so2bert.png',show_shapes=True)
+plot_model(model, to_file='//model_img_save_path/model.png',show_shapes=True)
 model.compile(loss='binary_crossentropy',
               optimizer='adam',
               metrics=['acc'])
