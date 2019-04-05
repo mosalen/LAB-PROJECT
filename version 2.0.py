@@ -75,21 +75,3 @@ model.compile(loss='binary_crossentropy',
               metrics=['acc'])
 print (model.metrics_names)
 model.fit(tf_train, train_labels, validation_data=(tf_val, val_labels), epochs=2, steps_per_epoch=64, validation_steps=64)
-
-'''
-doc_input = Input(shape=(None, None, 768), dtype='float32')
-doc_encoder = TimeDistributed(MultiHeadSelfAttention)(doc_input)
-dense = Dense(768, activation='relu')(doc_encoder)
-drop = Dropout(0.1)(dense)
-pred = Dense(2, activation='sigmoid')(drop)
-model = Model(doc_input, pred)
-model.summary()
-plot_model(model, to_file='D:/TBdata/result/model-sosobert.png',show_shapes=True)
-
-model.compile(loss='binary_crossentropy',
-              optimizer='adam',
-              metrics=['acc'])
-print (model.metrics_names)
-
-model.fit(tf_train, train_labels, validation_data=(tf_val, val_labels), steps_per_epoch=1, epochs=2)
-'''
