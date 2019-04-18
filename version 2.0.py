@@ -41,6 +41,7 @@ for t_line in train_texts:
     t_line = Upstream(t_line)
     train_docs = np.append(arr=train_docs, values=t_line, axis=0)
 print(' train_docs finished! shape is:'+str(np.shape(train_docs)))
+# np.save(':/train_docs.npy', train_docs)
 tf_train=tf.convert_to_tensor(train_docs, dtype=tf.float32)
 
 print('(2) pre-processing val texts...')
@@ -51,6 +52,7 @@ for v_line in val_texts:
     v_line = Upstream(v_line)
     val_docs = np.append(arr=val_docs, values=v_line, axis=0)
 print(' val_docs finished! shape is:'+str(np.shape(val_docs)))
+# np.save(':/val_docs.npy', val_docs)
 tf_val=tf.convert_to_tensor(val_docs, dtype=tf.float32)
 
 
