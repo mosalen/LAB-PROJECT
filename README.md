@@ -12,7 +12,8 @@ Since the encoding stage could be quite slow (even with TPU), one may want to sa
 BERT is a very huge unsupervised pre-trained model. So we recommend to run it on GPU or TPU, or it will be very slow. But the result will be surely outstanding.
 
 # On TPU
-We have implemented the model on Colab and uploaded our Chinese-version BERT to our TPU, while we will get it public later. 
+We have implemented the model on Colab (see version 2.0 on_TPU.ipynb). We have also uploaded our Chinese-version BERT to our TPU, while we will get it public later. Hence please upload a pre-trained Chinese-version BERT model if you need one, while other English versions are available.
+
 Note that currently there are four pre-trained BERT model checkpoints on google TPU:
 uncased_L-12_H-768_A-12: uncased BERT base model; 
 uncased_L-24_H-1024_A-16: uncased BERT large model; 
